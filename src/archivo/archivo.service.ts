@@ -63,8 +63,6 @@ export class ArchivoService {
     }
   }
   
-
-
   
   async remove(id: number) {
     const archivo = await this.archivoRepository.findOne({ where: { id }});

@@ -19,17 +19,20 @@ export class ProgramacompetenciaService {
   async create(createProgramacompetenciaDto: CreateProgramacompetenciaDto) {
        
     const pro = await this.programaRepository.findOne({ where: { id: createProgramacompetenciaDto.programaId }, relations: ['competencias'] });
+    if(!pro){
+      throw new NotFoundException('Programa no encontrado')
+    }
 
 
     for (let idc of createProgramacompetenciaDto.competenciaId){
       const comp = await this.competenciaRepository.findOne({ where: { id: idc } });
 
-           if (!pro || !comp) {
+           if ( !comp) {
              throw new Error('User or Group not found');
             }
           pro.competencias.push(comp);
       }
-    this.programaRepository.save(pro);
+    return await this.programaRepository.save(pro);
   }
 
   findAll() {

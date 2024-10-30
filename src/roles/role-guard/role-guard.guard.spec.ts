@@ -1,7 +1,9 @@
-import { RoleGuardGuard } from './role-guard.guard';
+import { RolesGuard } from './role-guard.guard';
 
-describe('RoleGuardGuard', () => {
+describe('RolesGuard', () => {
   it('should be defined', () => {
-    expect(new RoleGuardGuard()).toBeDefined();
+    expect(new RolesGuard(
+
+    )).toBeDefined();
   });
 });

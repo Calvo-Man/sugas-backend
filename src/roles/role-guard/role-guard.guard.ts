@@ -14,7 +14,7 @@ export class RolesGuard implements CanActivate {
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
-    console.log(requiredRoles)
+  
     // Si no se especificaron roles, permite el acceso
     if (!requiredRoles) {
       return true;    
@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
       }
       // Verificar el token de manera asíncrona para obtener el usuario
       const user = await this.jwtService.verifyAsync(token);
-      console.log(user)
+      
       // Verificar si el usuario tiene alguno de los roles requeridos
       const userRole = user.rol;
       const hasRole = requiredRoles.some((roles) => userRole === roles);

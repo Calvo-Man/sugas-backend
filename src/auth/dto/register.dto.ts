@@ -23,11 +23,6 @@ export class RegisterAuthDto {
     @Transform(({ value }) => value.trim())
     password: string;
 
-    @IsOptional()
-    @IsArray()
-    @IsNumber({}, { each: true }) // Valida que cada elemento sea un número
-    programa?: number[];
-
     @IsNotEmpty()
     @IsNumber()
     role: number;                    

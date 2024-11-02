@@ -6,11 +6,12 @@ export class CreateCompetenciaDto {
     @IsNotEmpty()
     @ToUpperCase()
     nombre : string;
+    
     @IsString()
     @IsNotEmpty()  
     codigo : string;
+    
     @IsNumber()
     @IsNotEmpty()
-    duracion : number;
-   
-    }
+    duracion : number;  
+}

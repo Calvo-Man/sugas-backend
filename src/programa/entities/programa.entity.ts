@@ -27,5 +27,5 @@ export class Programa {
 
     @ManyToMany(() => Usuario, (user) => user.programa)
     @JoinTable()
-    usuario:Usuario
+    usuario:Usuario[]
 }

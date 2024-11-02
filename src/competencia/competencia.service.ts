@@ -12,8 +12,38 @@ export class CompetenciaService {
     private competenciaRepository: Repository<Competencia>,
   ) {}
 
-  async create(createCompetenciaDto: CreateCompetenciaDto): Promise<Competencia> {
-    return this.competenciaRepository.save(createCompetenciaDto);
+  async create(createCompetenciaDto: CreateCompetenciaDto) {
+    const findCompetenciaByCodigo = await this.competenciaRepository.findOne({ where: { codigo: createCompetenciaDto.codigo } });
+
+    if (findCompetenciaByCodigo) {
+      return{
+        message: "Ya existe una competencia con este Código",
+        type: "error",
+        column: "codigo",
+        success: false
+      }
+    }
+
+    const findCompetenciaByNombre = await this.competenciaRepository.findOne({ where: { nombre: createCompetenciaDto.nombre } });
+
+    if (findCompetenciaByNombre) {
+      return{
+        message: "Ya existe una competencia con este Nombre",
+        type: "error",
+        column: "nombre",
+        success: false
+      }
+
+    }
+
+    const competencia = this.competenciaRepository.create(createCompetenciaDto);
+    await this.competenciaRepository.save(competencia);
+    return{
+      message: "Competencia creada correctamente",
+      type: "success",
+      success: true
+    }
+    
   }
  
   findAll(): Promise<Competencia[]> {

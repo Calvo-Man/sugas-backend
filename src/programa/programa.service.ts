@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Programa } from './entities/programa.entity';
 import { In, Repository } from 'typeorm';
 import { Competencia } from 'src/competencia/entities/competencia.entity';
+import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
 @Injectable()
 export class ProgramaService {
@@ -14,18 +15,47 @@ export class ProgramaService {
     private programaRepository: Repository<Programa>,
   ) {}
   
-  async create(createProgramaDto: CreateProgramaDto): Promise<Programa> {
-    
-    const pro = this.programaRepository.create(createProgramaDto);
-    try{
-    return this.programaRepository.save(pro);
+  async create(createProgramaDto: CreateProgramaDto) {
+    const findProgramByCode = await this.programaRepository.findOne({
+        where: { codigo: createProgramaDto.codigo },
+    });
+    if (findProgramByCode) {  
+      return {
+        message: "Ya existe un programa con este Código",
+        type: "error",
+        column: "codigo",
+        success: false
+      };
     }
-    catch (error) {
-      if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('Ya existe un programa con este código');
-      }
+
+    const findProgramByName = await this.programaRepository.findOne({
+        where: { nombre: createProgramaDto.nombre },
+    });
+    if (findProgramByName) {
+       return {
+        message: "Ya existe un programa con este Nombre",
+        type: "error",
+        column: "nombre",
+        success: false
+       }
     }
-  }
+    try {
+        const programa = this.programaRepository.create(createProgramaDto);
+        await this.programaRepository.save(programa);
+        return {
+            message: "Programa creado correctamente",
+            type: "success",  
+            success: true
+        }
+    } catch (error) {
+        if (error instanceof ConflictException) {
+            throw error;
+        }
+        // Puedes capturar otros tipos de errores o loggear el error
+        throw new Error('Hubo un problema al crear el programa');
+    }
+}
+
 
   findAll(): Promise<Programa[]> {
     return this.programaRepository.find({ relations: ['competencias'] });
@@ -47,13 +77,22 @@ export class ProgramaService {
 
     return programa ? programa.competencias : [];
   }
+  async getInstructoresPorPrograma(programaId: number) {
+    
+    const programa = await this.programaRepository.findOne({
+      where: { id: programaId },
+      relations: ['usuario','usuario.role'], 
+    });
 
-  //{ relations: ['competencias'] }
+    return programa ? programa.usuario : [];
+  }
+
+
   findOne(id: number): Promise<Programa> {
     
-    return this.programaRepository.findOne({ where: { id },  relations: ['competencias'] });
+    return this.programaRepository.findOne({ where: { id },  relations: ['competencias','usuario'] });
   }
- //
+ 
 
   async update(id: number, updateProgramaDto: UpdateProgramaDto): Promise<Programa> {
     console.log(id)

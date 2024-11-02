@@ -12,7 +12,6 @@ export class Competencia {
     codigo: string;
   
     @Column({ length: 200 })
-    
     nombre: string;
 
     @Column()

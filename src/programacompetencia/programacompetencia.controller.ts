@@ -36,10 +36,10 @@ export class ProgramacompetenciaController {
 
   
 
-  @Delete(':programId/competencia/:competenciaId')
+  @Delete(':programId/competencia/:competenciaCodigo')
   @Roles('admin')
-   removeRole(@Param('programId') programId: number, @Param('competenciaId') competenciaId: number) {
-    return  this.programacompetenciaService.remove(programId,competenciaId);
+   removeRole(@Param('programId') programId: number, @Param('competenciaCodigo') competenciaCodigo: string) {
+    return  this.programacompetenciaService.remove(programId,competenciaCodigo);
     
   }
 }

@@ -13,7 +13,6 @@ import { UsuariosModule } from 'src/usuarios/usuarios.module';
 
 @Module({
   imports: [
-   
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

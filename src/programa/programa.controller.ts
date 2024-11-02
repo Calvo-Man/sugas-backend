@@ -4,6 +4,7 @@ import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { RolesGuard } from 'src/roles/role-guard/role-guard.guard';
 import { Roles } from 'src/roles/decorator/role.decorator';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('programa')
 @UseGuards(RolesGuard)
@@ -25,6 +26,12 @@ export class ProgramaController {
   @Roles('admin','instructor')
   async getCompetenciasPorPrograma(@Param('id') programaId: string) {
     return this.programaService.getCompetenciasPorPrograma(+programaId);
+  }
+
+  @Get(':id/instructores')
+  @Roles('admin')
+  async getInstructoresPorPrograma(@Param('id') programaId: string) {
+    return this.programaService.getInstructoresPorPrograma(+programaId);
   }
 
   @Get('codigo/:id')

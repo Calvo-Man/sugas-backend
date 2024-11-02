@@ -33,9 +33,9 @@ export class ProgramasInstructorController {
     return this.programasInstructorService.update(+id, updateProgramasInstructorDto);
   }
 
-  @Delete(':id')
+  @Delete('programa/:idPrograma/instructor/:idUsuario')
   @Roles('admin')
-  remove(@Param('id') id: string) {
-    return this.programasInstructorService.remove(+id);
+  remove(@Param('idUsuario') idUsuario: string, @Param('idPrograma') idPrograma: string) {
+    return this.programasInstructorService.remove(+idUsuario, +idPrograma);
   }
 }

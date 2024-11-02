@@ -133,8 +133,6 @@ export class UsuariosService {
     const programasNoAsignados = allProgramas.filter(
       (programa) => !user.programa.some((userPrograma) => userPrograma.id === programa.id)
     );
-  
-    
     return programasNoAsignados;
   }
   
@@ -155,7 +153,7 @@ async update( updateUserDto: UpdateUsuarioDto) {
     const user = await this.userRepository.findOne({
       where: { email: updateUserDto.email },
     });
-    console.log(user)
+  
     
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);

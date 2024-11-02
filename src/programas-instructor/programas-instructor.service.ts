@@ -86,7 +86,31 @@ export class ProgramasInstructorService {
     return `This action updates a #${id} programasInstructor`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} programasInstructor`;
-  }
+  async remove(idUsuario: number, idPrograma: number) {
+    try {
+        const instructor = await this.userService.findOne(idUsuario);
+        if (!instructor) {
+            throw new NotFoundException(`Instructor con ID ${idUsuario} no encontrado`);
+        }
+
+        const programa = await this.programaService.findOne(idPrograma);
+        if (!programa) {
+            throw new NotFoundException(`Programa con ID ${idPrograma} no encontrado`);
+        }
+
+        // Filtra para eliminar el usuario del programa
+        programa.usuario = programa.usuario.filter((usuario) => usuario.id !== idUsuario);
+        await this.programaService.update(idPrograma, programa);
+        return { message: 'Usuario eliminado del programa correctamente' };
+    } catch (error) {
+        // Verifica si es una excepción controlada (e.g., NotFoundException)
+        if (error instanceof NotFoundException) {
+            throw error;
+        }
+
+        // Opcionalmente puedes registrar el error y lanzar un error genérico
+        console.error('Error al intentar eliminar el usuario del programa:', error);
+        throw new Error('Hubo un problema al intentar eliminar el usuario del programa');
+    }
+}
 }

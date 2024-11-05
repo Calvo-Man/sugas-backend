@@ -18,14 +18,14 @@ export class Programa {
     @Column()
     version: number;
 
-    @OneToMany(() => Resultado, resultado => resultado.programa)
+    @OneToMany(() => Resultado, resultado => resultado.programa, { onDelete: 'CASCADE' })
     resultados: Resultado[];
     
-    @ManyToMany(() => Competencia, competencia => competencia.programas)
+    @ManyToMany(() => Competencia, competencia => competencia.programas, { onDelete: 'CASCADE' })
     @JoinTable()
     competencias: Competencia[];
 
-    @ManyToMany(() => Usuario, (user) => user.programa)
+    @ManyToMany(() => Usuario, (user) => user.programa, { onDelete: 'CASCADE' })
     @JoinTable()
     usuario:Usuario[]
 }

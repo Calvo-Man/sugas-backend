@@ -6,6 +6,7 @@ export class CreateProgramacompetenciaDto {
     @IsNotEmpty()
     programaId : number;
 
-
+    @IsNumber({}, { each: true })
+    @IsNotEmpty()
     competenciaId : number[];
 }

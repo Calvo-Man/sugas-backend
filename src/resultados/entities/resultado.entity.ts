@@ -20,6 +20,6 @@ export class Resultado {
   @ManyToOne(() => Competencia, (competencia) => competencia.resultado,{ nullable: false })
     competencia: Competencia
    
-    @OneToMany(() => Archivo, (archivo) => archivo.resultadoId,{ nullable: false })
+    @OneToMany(() => Archivo, (archivo) => archivo.resultadoId,{ nullable: false,onDelete: 'CASCADE' })
     archivo: Archivo[]
 }

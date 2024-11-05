@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProgramasInstructorDto } from './dto/create-programas-instructor.dto';
 import { UpdateProgramasInstructorDto } from './dto/update-programas-instructor.dto';
 import { ProgramaService } from 'src/programa/programa.service';
@@ -20,7 +24,6 @@ export class ProgramasInstructorService {
   async AsignarProgramasAInstructor(
     createProgramasInstructorDto: CreateProgramasInstructorDto,
   ) {
-
     // Obtener las instructores solicitadas
     const instructor = await this.userService.findOne(
       createProgramasInstructorDto.instructor,
@@ -31,7 +34,7 @@ export class ProgramasInstructorService {
         `Instructor con ID ${createProgramasInstructorDto.instructor} no encontrado`,
       );
     }
-    
+
     // Buscar el programa por ID
     const programa = await this.programaService.findProgramasByIds(
       createProgramasInstructorDto.programa,
@@ -47,9 +50,7 @@ export class ProgramasInstructorService {
 
     programa.forEach((nuevoPrograma) => {
       if (
-        programasExistentes.some(
-          (programa) => programa.id === nuevoPrograma.id,
-        )
+        programasExistentes.some((programa) => programa.id === nuevoPrograma.id)
       ) {
         throw new ConflictException(
           `La competencia con ID ${nuevoPrograma.id} ya está relacionada con el programa con ID ${createProgramasInstructorDto.instructor}`,
@@ -65,7 +66,6 @@ export class ProgramasInstructorService {
       id: instructor.id, // Preload busca el instructor por su ID
       programa: instructor.programa, // Asigna los programas al instructor
     });
-
 
     // Guardar el programa con las nuevas competencias
     return await this.userRepository.save(userPrograma);
@@ -88,29 +88,40 @@ export class ProgramasInstructorService {
 
   async remove(idUsuario: number, idPrograma: number) {
     try {
-        const instructor = await this.userService.findOne(idUsuario);
-        if (!instructor) {
-            throw new NotFoundException(`Instructor con ID ${idUsuario} no encontrado`);
-        }
+      const instructor = await this.userService.findOne(idUsuario);
+      if (!instructor) {
+        throw new NotFoundException(
+          `Instructor con ID ${idUsuario} no encontrado`,
+        );
+      }
 
-        const programa = await this.programaService.findOne(idPrograma);
-        if (!programa) {
-            throw new NotFoundException(`Programa con ID ${idPrograma} no encontrado`);
-        }
+      const programa = await this.programaService.findOne(idPrograma);
+      if (!programa) {
+        throw new NotFoundException(
+          `Programa con ID ${idPrograma} no encontrado`,
+        );
+      }
 
-        // Filtra para eliminar el usuario del programa
-        programa.usuario = programa.usuario.filter((usuario) => usuario.id !== idUsuario);
-        await this.programaService.update(idPrograma, programa);
-        return { message: 'Usuario eliminado del programa correctamente' };
+      // Filtra para eliminar el usuario del programa
+      programa.usuario = programa.usuario.filter(
+        (usuario) => usuario.id !== idUsuario,
+      );
+      await this.programaService.update(idPrograma, programa);
+      return { message: 'Usuario eliminado del programa correctamente' };
     } catch (error) {
-        // Verifica si es una excepción controlada (e.g., NotFoundException)
-        if (error instanceof NotFoundException) {
-            throw error;
-        }
+      // Verifica si es una excepción controlada (e.g., NotFoundException)
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
-        // Opcionalmente puedes registrar el error y lanzar un error genérico
-        console.error('Error al intentar eliminar el usuario del programa:', error);
-        throw new Error('Hubo un problema al intentar eliminar el usuario del programa');
+      // Opcionalmente puedes registrar el error y lanzar un error genérico
+      console.error(
+        'Error al intentar eliminar el usuario del programa:',
+        error,
+      );
+      throw new Error(
+        'Hubo un problema al intentar eliminar el usuario del programa',
+      );
     }
-}
+  }
 }

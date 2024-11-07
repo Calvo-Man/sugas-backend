@@ -24,7 +24,7 @@ export class Archivo {
       @UpdateDateColumn({ type: 'timestamp' })
       updatedAt: Date;
 
-      @ManyToOne(() => Resultado, (resultado) => resultado.archivo,{ nullable: false })
+      @ManyToOne(() => Resultado, (resultado) => resultado.archivo,{ nullable: false ,onDelete: 'CASCADE'})
       resultadoId: Resultado
     }
 

@@ -26,12 +26,11 @@ export class Competencia {
   duracion: number;
 
   @ManyToMany(() => Programa, (programa) => programa.competencias, {
-    nullable: false,
+    onDelete: 'CASCADE',
   })
   programas: Programa[];
 
   @OneToMany(() => Resultado, (resultado) => resultado.competencia, {
-    nullable: false,
     onDelete: 'CASCADE',
   })
   resultado: Resultado[];

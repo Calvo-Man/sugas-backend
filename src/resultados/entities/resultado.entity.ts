@@ -14,10 +14,10 @@ export class Resultado {
   @Column()
   duracion: number;
 
-  @ManyToOne(() => Programa, programa => programa.resultados,{ nullable: false })
+  @ManyToOne(() => Programa, programa => programa.resultados,{ nullable: false,onDelete: 'CASCADE' })
   programa: Programa;
 
-  @ManyToOne(() => Competencia, (competencia) => competencia.resultado,{ nullable: false })
+  @ManyToOne(() => Competencia, (competencia) => competencia.resultado,{ nullable: false,onDelete: 'CASCADE' })
     competencia: Competencia
    
     @OneToMany(() => Archivo, (archivo) => archivo.resultadoId,{ nullable: false,onDelete: 'CASCADE' })

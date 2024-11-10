@@ -6,7 +6,7 @@ import { Resultado } from 'src/resultados/entities/resultado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import cloudinary from 'src/cloudinary.config';
-import axios from 'axios';
+
 @Injectable()
 export class ArchivoService {
   constructor(

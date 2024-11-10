@@ -5,7 +5,7 @@ import { Archivo } from './entities/archivo.entity';
 import { Resultado } from 'src/resultados/entities/resultado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-//import cloudinary from 'src/cloudinary.config';
+import cloudinary from 'src/cloudinary.config';
 import axios from 'axios';
 @Injectable()
 export class ArchivoService {
@@ -52,15 +52,15 @@ export class ArchivoService {
   }
 
   async borrarArchivo(publicId: string, id : number) {
-    // try {
-    //  const result = await cloudinary.uploader.destroy(publicId, {
-    //     resource_type: 'raw',
-    //   });
-    //   return result
-    // } catch (error) {
-    //   console.error('Error al eliminar el archivo:', error);
-    //   throw error;
-    // }
+    try {
+     const result = await cloudinary.uploader.destroy(publicId, {
+        resource_type: 'raw',
+      });
+      return result
+    } catch (error) {
+      console.error('Error al eliminar el archivo:', error);
+      throw error;
+    }
   }
   
   

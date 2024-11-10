@@ -31,17 +31,24 @@ import { ProgramasInstructorModule } from './programas-instructor/programas-inst
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRoot({
-      
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '12345678',
-      database: 'gguias',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    //  entities: [Programa, Competencia, Resultado, Archivo],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
+        connectTimeout: 40000,
+        autoLoadEntities: true,
+        ssl: {
+          rejectUnauthorized: false
+        },
+      }),
+      inject: [ConfigService],
     }),
     
     ProgramaModule,

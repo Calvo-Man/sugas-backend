@@ -18,7 +18,7 @@ import { RoleSeedModule } from './roles/rol-seed.module';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { inject } from 'vue';
+
 import { ProgramasInstructorModule } from './programas-instructor/programas-instructor.module';
 
 @Module({

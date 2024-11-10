@@ -6,7 +6,7 @@
         "use": "@vercel/node"
       }
     ],
-    "includeFiles": ["src/cloudinary.config.ts", ".env"],
+    
     "routes": [
       {
         "src": "/(.*)",

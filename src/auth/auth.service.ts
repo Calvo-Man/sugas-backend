@@ -23,8 +23,22 @@ export class AuthService {
   async register(registerAuthDto: RegisterAuthDto) {
     
     const user = await this.usuarioService.findByEmail(registerAuthDto.email);
+
     if (user) {
-      throw new BadRequestException('Email already exists');
+      throw new BadRequestException('El usuario ya existe');
+      //return { message: 'El usuario ya existe' };
+    }
+    const userCedula = await this.usuarioService.findByCedula(registerAuthDto.cedula);
+  
+    if(userCedula){
+      throw new BadRequestException('La cedula ya existe');
+     // return { message: 'La cedula ya existe' };
+    }
+
+    const userTelefono = await this.usuarioService.findByTelefono(registerAuthDto.telefono);
+    if(userTelefono){
+      throw new BadRequestException('El telefono ya existe');
+     // return { message: 'El telefono ya existe' };
     }
     const role = await this.rolesService.findOne(registerAuthDto.role);
     if (!role) {

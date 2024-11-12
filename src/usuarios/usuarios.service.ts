@@ -146,7 +146,16 @@ export class UsuariosService {
   async findByEmail(email: string) {
     return await this.userRepository.findOne({
       where: { email },relations: ['role']
-    
+    });
+  }
+  async findByCedula(cedula: string) {
+    return await this.userRepository.findOne({
+      where: { cedula },relations: ['role']
+    });
+  }
+  async findByTelefono(telefono: string) {
+    return await this.userRepository.findOne({
+      where: { telefono },relations: ['role']
     });
   }
 async update( updateUserDto: UpdateUsuarioDto) {

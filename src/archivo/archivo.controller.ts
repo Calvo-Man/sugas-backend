@@ -39,7 +39,6 @@ export class ArchivoController {
   @Roles('admin','coordinador')
   remove(
     @Param('id') id: number
-   
   ) {
    return this.archivoService.remove(id);
   }
